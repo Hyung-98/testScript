@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intersection</title>
+    <link rel="stylesheet" href="./css/common.css">
+    <script src="./js/intersection.js"></script>
+    <style>
+        .view {
+            width: 200px;
+            height: 250px;
+            margin-bottom: 100px;
+            display: flex;
+            flex-wrap: wrap;
+            transition: all .3s ease-out;
+        }
+
+        .view.visible {
+            background-color: lightgray;
+        }
+
+        .view.all {            
+            background-color: gray;
+        }
+
+        .per {
+            width: 100%;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+        }
+        .per.t {
+            align-items: flex-start;
+        }
+        .per.b {
+            align-items: flex-end;
+        }
+    </style>
+</head>
+<body>
+    <div class="boxArea">
+        <div class="view visible">
+            <span class="per t">100</span>
+            <span class="per b">100</span>
+        </div>
+        <div class="view visible">
+            <span class="per t">100</span>
+            <span class="per b">100</span>
+        </div>
+        <div class="view visible">
+            <span class="per t">100</span>
+            <span class="per b">100</span>
+        </div>
+        <div class="view visible">
+            <span class="per t">100</span>
+            <span class="per b">100</span>
+        </div>
+        <div class="view visible">
+            <span class="per t">100</span>
+            <span class="per b">100</span>
+        </div>
+    </div>
+
+    <script>
+        // const viewBox = new Intersection(document.querySelectorAll('.view'))
+        intersectionEvent('.view')
+
+        const views = new Intersection('.view')
+        console.log(views)
+        views.el.addEventListener('intersection.visible', ()=> {
+            console.dir('view')
+        })
+        views.el.addEventLisetner('intersection.hidden', ()=> {
+            console.dir('hidden')
+        })
+    </script>
+
+</body>
+</html>
