@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intersection</title>
     <link rel="stylesheet" href="./css/common.css">
-    <script src="./js/intersection.js"></script>
+    <script src="./js/intersection2.js"></script>
     <style>
         .view {
             width: 200px;
@@ -65,14 +65,26 @@
 
     <script>
         // const viewBox = new Intersection(document.querySelectorAll('.view'))
-        intersectionEvent('.view')
+        // intersectionEvent('.view')
+
+        // const views = new Intersection('.view')
+        // console.log(views)
+        // views.el.addEventListener('intersection.visible', ()=> {
+        //     console.dir('view')
+        // })
+        // views.el.addEventLisetner('intersection.hidden', ()=> {
+        //     console.dir('hidden')
+        // })
 
         const views = new Intersection('.view')
-        console.log(views)
-        views.el.addEventListener('intersection.visible', ()=> {
+
+        views.el.addEventListener('intersection.visible.all', () => {
+            console.dir('all')
+        })
+        views.el.addEventListener('intersection.visible', () => {
             console.dir('view')
         })
-        views.el.addEventLisetner('intersection.hidden', ()=> {
+        views.el.addEventListener('intersection.hidden', () => {
             console.dir('hidden')
         })
     </script>
