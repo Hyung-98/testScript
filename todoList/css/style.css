@@ -1,0 +1,256 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+ul,li,ol {
+    list-style: none;
+}
+
+.todo-list {
+    width: 50%;
+    height: auto;
+    margin: 40px auto;
+    padding: 30px 20px;
+    background-color: #f3f3f3;
+    box-sizing: border-box;
+}
+
+.todo-list_head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: flex-start;
+    width: 100%;
+    height: auto;
+    position: relative;
+}
+
+.todo-list_head .todo-list_inputbox {
+    display: flex;
+    width: 100%;
+}
+.todo-list_head .todo-list_inputbox .todo-list_select {
+    position: absolute;
+    width: 10%;
+    height: 100%;
+}
+
+.todo-list_head .todo-list_inputbox .all-select {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    background: url(../images/check-g.png) no-repeat center center / cover;
+}
+.todo-list_head .todo-list_inputbox .all-select.on {
+    background: url(../images/check-gr.png) no-repeat center center / cover;
+}
+
+.todo-list_head .todo-list_inputbox input {
+    width: 88%;
+    height: 40px;
+    border: 1px solid #e1e1e1;
+    border-right: none;
+    outline: 0;
+    font-size: 20px;
+    padding-left: 40px;
+}
+.todo-list_head .todo-list_inputbox input::placeholder {
+    color: #e1e1e1
+}
+
+.todo-list_head .todo-list_inputbox button {
+    width: 12%;
+    border: 1px solid #e1e1e1;
+    border-left: none;
+    cursor: pointer;
+    transition: all .3s;
+}
+
+.todo-list_head button:hover {
+    background-color: #aaaaaa;
+}
+
+.todo-list_content {
+    width: 100%;
+    height: auto;
+    border: 1px solid #e1e1e1;
+    border-top: 0;
+    border-bottom: 0;
+    box-sizing: border-box;
+}
+
+.todo-list_content li {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 45px;
+    background-color: #fff;
+    box-sizing: border-box;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+    border-bottom: 1px solid #dbdbdb;
+    transition: all .3s;
+}
+
+.todo-list_content li .todo-list_check {
+    padding: 0 4%;
+}
+
+.todo-list_content li .todo-list_check > span {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #dbdbdb;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all .3s;
+    position: relative;
+}
+
+.todo-list_content li.active .todo-list_check > span{
+    border-color: #94e09a;
+}
+
+.todo-list_content li.active .todo-list_check > span::after {
+    content: '';
+    width: 70%;
+    height: 70%;
+    background: url(../images/check-gr.png) no-repeat center center / cover;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.todo-list_content li > div {
+    display: flex;
+}
+
+.todo-list_content li > .todo-list_input {
+    width: 68%;
+    height: 100%;
+    padding: 0 2%;
+    margin-right: 4%;
+    box-sizing: border-box;
+    align-items: center;
+    cursor: pointer;
+}
+
+.todo-list_content li > .todo-list_input input {
+    width: 100%;
+    border: 0;
+    outline: 0;
+    font-size: 20px;
+    cursor: pointer;
+    position: relative;
+    transition: all .3s;
+    background: none;
+}
+
+.todo-list_content li.active > .todo-list_input input {
+    color: #d5d5d5;
+    text-decoration: line-through;
+}
+
+.todo-list_content li > .todo-list_icon {
+    display: none;
+    padding-right: 15px;
+}
+
+.todo-list_content li:hover > .todo-list_icon {
+    display: flex;
+}
+
+.todo-list_content li > .todo-list_icon button {
+    display: block;
+    border: 0;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+}
+.todo-list_content li > div button:first-child {
+    margin-right: 4px;
+}
+
+.todo-list_content li > div .delete {
+    width: 20px;
+    height: 20px;
+    background: url(../images/x-icon.png) no-repeat center center / 70%;
+}
+.todo-list_content li > div .delete:hover {
+    background : url(../images/x-g-icon.png) no-repeat center center / 70%;
+}
+
+.todo-list_content li > div .modify {
+    width: 20px;
+    height: 20px;
+    background: url(../images/modify-icon.png) no-repeat center center / cover;
+}
+.todo-list_content li > div .modify:hover {
+    background : url(../images/modify-g-icon.png) no-repeat center center / cover;
+}
+
+.todo-list_footer {
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px 18px;
+    padding-right: 6px;
+    border: 1px solid #e1e1e1;
+    border-top: 0;
+    box-sizing: border-box;
+    background-color: #fff;
+    font-size: 12px;
+    color: #545454;
+}
+
+.todo-list_footer .divide {
+    width: 1px;
+    padding: 5px 0;
+    background-color: #bdbdbd;
+}
+
+.todo-list_footer > .todo-list_search span {
+    display: inline-block;
+    padding: 1px 3px;
+    cursor: pointer;
+    box-sizing: border-box;
+    border-radius: 4px;
+    transition: all .3s;
+}
+
+.todo-list_footer > .todo-list_search span:nth-child(2) {
+    margin: 0 4px
+}
+
+.todo-list_footer > .todo-list_search span.on {
+    outline: 1px solid #545454;
+}
+
+.todo-list_footer > .todo-list_search span:is(:hover, :focus) {
+    outline: 1px solid #d5d5d5;
+}
+
+.todo-list_footer .todo-list_option {
+    display: flex;
+    position: relative;
+}
+
+.todo-list_footer .todo-list_option > div span {
+    display: inline-block;
+    padding: 2px;
+    border-radius: 3px;
+    transition: all .3s;
+    cursor: pointer;
+}
+.todo-list_footer .todo-list_option > div span:is(:hover, :focus) {
+    outline: 1px solid #d5d5d5;
+}

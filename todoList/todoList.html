@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>To Do List</title>
+        <link rel="stylesheet" href="./css/style.css" />
+        <script src="./js/todoList.js"></script>
+    </head>
+    <body>
+        <div class="todo-list">
+            <div class="todo-list_head">
+                <div class="todo-list_inputbox">
+                    <div class="todo-list_select"><span class="all-select"></span></div>
+                    <input type="text" id="todo-list_text" placeholder="Write down what to do today!"/>
+                    <button>ADD</button>
+                </div>
+            </div>
+
+            <ul class="todo-list_content"></ul>
+            
+            <div class="todo-list_footer">
+                <div class="todo-list_count">
+                    <span class="check-count">0</span> items left
+                </div>
+                <i class="divide"></i>
+                <div class="todo-list_search">
+                    <span class="on" data-type="All">All</span>
+                    <span data-type="Active">Active</span>
+                    <span data-type="Complited">Complited</span>
+                </div>
+                <i class="divide"></i>
+                <div class="todo-list_option">
+                    <div class="todo-list_delete">
+                        <span class="all-delete">All Delete</span>
+                        <span class="select-delete">Delete</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+
+        // let todo1 = new Todo('.todo-list')
+        new Todo('.todo-list')
+
+    </script>
+</html>
