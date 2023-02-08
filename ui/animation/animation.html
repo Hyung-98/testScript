@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animation</title>
+    <link rel="stylesheet" href="../../intersection/css/common.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <style>
+        body {
+            background-color: black;
+            height: 5000px;
+        }
+        :root {
+            --box-blue-color: blue;
+            --box-red-color: red;
+            --box-green-color: #5b9d5b;
+            --box-yellow-color: yellow;
+            --box-purple-color: purple;
+        }
+        .wrap {
+            width: auto;
+            margin: 1180px 0 0 50px;
+            box-sizing: border-box;
+        }
+        .view {
+            width: 80px;
+            height: 80px;
+            box-sizing: border-box;
+            opacity: 0;
+        }
+        .view.blue {
+            background-color: var(--box-blue-color);
+        }
+        .view.red {
+            background-color: var(--box-red-color);
+        }
+        .view.green {
+            background-color: var(--box-green-color);
+        }
+        .view.yellow {
+            background-color: var(--box-yellow-color);
+        }
+        .view.purple {
+            background-color: var(--box-purple-color);
+        }
+        #target-01 {
+            width: 350px;
+            height: 100px;
+            background-color: #d9d9d9;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div id="target-01"></div>
+        <div class="view green" data-animation="
+            {
+                &quot;duration&quot;:1,
+                &quot;reference&quot;: &quot;#target-01&quot;,
+                &quot;offset&quot;: 150,
+                &quot;from&quot;: {
+                    &quot;x&quot;: 100,
+                    &quot;opacity&quot;: 0
+                },
+                &quot;to&quot;: {
+                    &quot;x&quot;: 0,
+                    &quot;opacity&quot;: 1,
+                    &quot;ease&quot;: &quot;Back.easeOut&quot;
+                }
+            }"></div>
+    </div>
+    <script>
+
+        function Animation(el) {
+            this.el = el
+            this.data = {}
+            this.state = {}
+            this.isAnimated = {}
+
+            this.set = function(tg) {
+                let string = tg.getAttribute('data-animation').match(/(\S|\ |\n)+(\,?)/g)
+                let value = String(string).split(' ').join('').replace(/\s*/g, '')
+
+                this.data = JSON.parse(value)
+
+                let rect = tg.getBoundingClientRect()
+
+                if (rect.top >= 0 && rect.bottom <= innerHeight) this.state = 'all'
+                else if (rect.top <= 0 && rect.bottom >= 0) this.state = 'visible top'
+                else if (rect.top <= innerHeight && rect.bottom >= innerHeight) this.state = 'visible bottom'
+                else this.state = 'hidden'
+
+                if (rect.top <= (innerHeight / 2) && rect.bottom >= (innerHeight / 2)) this.isAnimated = true
+                else this.isAnimated = false
+            }
+
+            this.bindEvent = function() {
+                this.el.forEach(view => {
+                    window.addEventListener('scroll', e => {
+                        this.set(view)
+                        this.anima(view)
+                    })
+                })
+            }
+
+            this.anima = function(tg) {
+                let top = tg.getBoundingClientRect().top
+                let ref = this.data.reference
+                let refRect = document.querySelector(ref).getBoundingClientRect()
+
+                let fromKeys = Object.keys(this.data.from)
+                let toKeys = Object.keys(this.data.to)
+
+                if (this.isAnimated && !tg.classList.contains('animated')) {
+                    for (const i in fromKeys) {
+                        gsap.from(tg, this.data.duration, {
+                            [fromKeys[i]]: this.data.from[fromKeys[i]],
+                            onInit: function() {
+                                console.log(this)
+                            }
+                        })
+                    }
+
+                    for (const i in toKeys) {
+                        gsap.to(tg, this.data.duration, {
+                            [toKeys[i]]: this.data.to[toKeys[i]],
+                            onComplete: function() {
+                                tg.classList.add('animated')
+                            }
+                        })
+                    }
+                }
+
+                TweenMax.staggerFrom(tg, 1, {
+                    
+                })
+            }
+        }
+
+        let ani = new Animation(document.querySelectorAll('.view'))
+        ani.bindEvent()
+
+    </script>
+</body>
+</html>

@@ -1,22 +1,3 @@
-// class Intersection {
-//     constructor(tg) {
-//         this.set(tg)
-//     }
-
-//     set(tg) {
-//         this.intersectionElement = this.map(tg)
-//         console.log(this.intersectionElement)
-//     }
-
-//     map(tg) {
-//         for (const x of tg) {
-//             console.log(x)
-//             return x
-//         }
-//     }
-// }
-
-
 function intersectionHandler(el) {
     const boxList = document.querySelectorAll(el)
 
@@ -71,40 +52,4 @@ function intersectionEvent(el) {
     window.addEventListener('scroll', intersectionHandler.bind(this, el))
     window.addEventListener('resize', intersectionHandler.bind(this, el))
     window.addEventListener('load', intersectionHandler.bind(this, el))
-}
-
-class Intersection {
-    constructor(el) {
-        this.el = document.querySelector(el)
-
-        this.set()
-        this.bindEvent()
-    }
-
-    set() {
-        this.rect = {}
-        this.state = {}
-    }
-
-    bindEvent() {
-        window.addEventListener('scroll', e=> {
-            this.detectIntersection()
-            this.detectStateView()
-            this.detectDispatch()
-        })
-    }
-
-    detectIntersection() {
-        this.rect = this.el.getBoundingClientRect()
-    }
-
-    detectStateView() {
-        if(this.rect.top >= 0 && this.rect.bottom <= innerHeight) this.state.view = true
-        else this.state.view = false
-    }
-
-    detectDispatch() {
-        if(this.state.view) this.el.dispatchEvent(new Event('intersection.visible'))
-        else this.el.dispatchEvent(new Event('intersection.hidden'))
-    }
 }

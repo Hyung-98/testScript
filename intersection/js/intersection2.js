@@ -1,40 +1,79 @@
 class Intersection {
-    constructor(el) {
-        this.el = document.querySelectorAll(el)
+    constructor(el, fn) {
+        this.el = el
 
-        this.set()
+        this.set(fn)
         this.bindEvent()
     }
 
-    set() {
+    set(fn) {
         this.rect = {}
         this.state = {}
+        this.ratio = {}
+        this.target
+        this.fn = fn
     }
 
     bindEvent() {
+        window.addEventListener('load', e => {
+            this.detectIntersection()
+            this.detectIntersectionRatio()
+            this.intersectionRatioOutput()
+            this.fn()
+        })
         window.addEventListener('scroll', e => {
             this.detectIntersection()
-            this.detectStateView()
-            this.detectDispatch()
+            this.detectIntersectionRatio()
+            this.intersectionRatioOutput()
+            this.fn()
+        })
+        window.addEventListener('resize', e => {
+            this.detectIntersection()
+            this.detectIntersectionRatio()
+            this.intersectionRatioOutput()
+            this.fn()
         })
     }
 
     detectIntersection() {
-        for (const idx in this.el) {
-            // console.log(this.el[idx])
-            this.rect = this.el.getBoundingClientRect()
+        for(const view of this.el) {
+            this.rect[view.id] = view.getBoundingClientRect()
+            if(
+                this.rect[view.id].top <= 0 && this.rect[view.id].bottom >= 0 ||
+                this.rect[view.id].top <= innerHeight && this.rect[view.id].bottom >= innerHeight
+            ) this.target = view
+            this.detectStateView(view)
         }
     }
 
-    detectStateView() {
-        if (this.rect.top >= 0 && this.rect.bottom <= innerHeight) this.state.view = 1
-        else if (this.rect.top <= 0 && this.rect.bottom >= 0) this.state.view = 2
-        else this.state.view = 3
+    detectStateView(view) {
+        if (this.rect[view.id].top >= 0 && this.rect[view.id].bottom <= innerHeight) this.state[view.id] = 1
+        else if (this.rect[view.id].top <= 0 && this.rect[view.id].bottom >= 0) this.state[view.id] = 20
+        else if (this.rect[view.id].top <= innerHeight && this.rect[view.id].bottom >= innerHeight) this.state[view.id] = 21
+        else this.state[view.id] = 3
     }
 
-    detectDispatch() {
-        if (this.state.view === 1) this.el.dispatchEvent(new Event('intersection.visible.all'))
-        else if (this.state.view === 2) this.el.dispatchEvent(new Event('intersection.visible'))
-        else this.el.dispatchEvent(new Event('intersection.hidden'))
+    detectIntersectionRatio() {
+        for (const view of this.el) {
+            if (this.state[view.id] === 1) {
+                this.ratio[view.id] = 100
+            } else if (this.state[view.id] === 20) {
+                this.ratio[view.id] = parseInt(this.rect[view.id].top / this.rect[view.id].height * 100) + 100
+            } else if (this.state[view.id] === 21) {
+                this.ratio[view.id] = parseInt((innerHeight - this.rect[view.id].top) / this.rect[view.id].height * 100)
+            } else this.ratio[view.id] = 0
+        }
+    }
+    
+    intersectionRatioOutput() {
+        [...this.el].map(view => {
+            let spans = view.children
+
+            for (const span of spans) {
+                if (parseInt(span.innerText) !== this.ratio[view.id]) {
+                    span.innerText = this.ratio[view.id]
+                }
+            }
+        })
     }
 }

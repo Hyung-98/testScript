@@ -190,15 +190,17 @@ class Todo{
                 this.todoHeaderSelect.classList.contains('on')
                 ? item.classList.add('active')
                 : item.classList.remove('active')
-            } else {
-                if(listItems.length === activeCount) this.todoHeaderSelect.classList.add('on')
-                else this.todoHeaderSelect.classList.remove('on')
             }
 
             if(item.classList.contains('active') && listItems.length !== activeCount) {
                 ++activeCount
             }
-            console.log(activeCount)
+
+            if(select !== 'all-select') {
+                listItems.length === activeCount
+                ? this.todoHeaderSelect.classList.add('on')
+                : this.todoHeaderSelect.classList.remove('on')
+            }
         }        
         
         this.todoFooter.querySelector('.check-count').innerHTML = this.todoInfo.length - activeCount

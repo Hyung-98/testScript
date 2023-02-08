@@ -7,74 +7,105 @@
     <title>Intersection</title>
     <link rel="stylesheet" href="./css/common.css">
     <script src="./js/intersection2.js"></script>
+    <!-- <script src="./js/intersection3.js"></script> -->
     <style>
         .view {
+            position: relative;
             width: 200px;
             height: 250px;
             margin-bottom: 100px;
             display: flex;
             flex-wrap: wrap;
+            justify-content: space-between;
+            align-content: space-between;
             transition: all .3s ease-out;
+            border: 1px solid #000;
         }
-
+        
         .view.visible {
             background-color: lightgray;
         }
 
         .view.all {            
-            background-color: gray;
+            background-color: darkgray;
         }
 
-        .per {
-            width: 100%;
-            text-align: center;
-            display: flex;
-            justify-content: center;
+        .view span {
+            width: 50%;
         }
-        .per.t {
-            align-items: flex-start;
+        .lt, .lb {
+            text-align: left;
         }
-        .per.b {
-            align-items: flex-end;
+        .rt, .rb {
+            text-align: right;
         }
     </style>
 </head>
 <body>
     <div class="boxArea">
-        <div class="view visible">
-            <span class="per t">100</span>
-            <span class="per b">100</span>
+        <div class="view" id="view-1">
+            <span class="lt"></span>
+            <span class="rt"></span>
+            <span class="lb"></span>
+            <span class="rb"></span>
         </div>
-        <div class="view visible">
-            <span class="per t">100</span>
-            <span class="per b">100</span>
+        <div class="view" id="view-2">
+            <span class="lt"></span>
+            <span class="rt"></span>
+            <span class="lb"></span>
+            <span class="rb"></span>
         </div>
-        <div class="view visible">
-            <span class="per t">100</span>
-            <span class="per b">100</span>
+        <div class="view" id="view-3">
+            <span class="lt"></span>
+            <span class="rt"></span>
+            <span class="lb"></span>
+            <span class="rb"></span>
         </div>
-        <div class="view visible">
-            <span class="per t">100</span>
-            <span class="per b">100</span>
+        <div class="view" id="view-4">
+            <span class="lt"></span>
+            <span class="rt"></span>
+            <span class="lb"></span>
+            <span class="rb"></span>
         </div>
-        <div class="view visible">
-            <span class="per t">100</span>
-            <span class="per b">100</span>
+        <div class="view" id="view-5">
+            <span class="lt"></span>
+            <span class="rt"></span>
+            <span class="lb"></span>
+            <span class="rb"></span>
+        </div>
+        <div class="view" id="view-6">
+            <span class="lt"></span>
+            <span class="rt"></span>
+            <span class="lb"></span>
+            <span class="rb"></span>
+        </div>
+        <div class="view" id="view-7">
+            <span class="lt"></span>
+            <span class="rt"></span>
+            <span class="lb"></span>
+            <span class="rb"></span>
+        </div>
+        <div class="view" id="view-8">
+            <span class="lt"></span>
+            <span class="rt"></span>
+            <span class="lb"></span>
+            <span class="rb"></span>
         </div>
     </div>
 
     <script>
-        const views = new Intersection('.view')
 
-        views.el.addEventListener('intersection.visible.all', () => {
-            console.dir('all')
+        const views = new Intersection(document.querySelectorAll('.view'), function(e) {
+            let ratio = this.ratio
+            let el = [...this.el]
+
+            el.map(view => {
+                this.state[view.id] === 1 ? view.classList.add('all') : view.classList.remove('all')
+                this.state[view.id] >= 1 && this.state[view.id] !== 3 ? view.classList.add('visible') : view.classList.remove('visible')
+            })
+
         })
-        views.el.addEventListener('intersection.visible', () => {
-            console.dir('view')
-        })
-        views.el.addEventListener('intersection.hidden', () => {
-            console.dir('hidden')
-        })
+
     </script>
 
 </body>
