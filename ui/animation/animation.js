@@ -42,7 +42,7 @@ class Animation {
         if (!this.data.once && this.data.once !== undefined) {
             let tgRect = tg.getBoundingClientRect()
             if (tgRect.bottom <= 0 || tgRect.top >= innerHeight) {
-                // 스크롤시 reset 작업 once
+                this.animationElSet(tg)
                 this.animationCount[idx] = false
                 tg.classList.remove('animated')
             }
@@ -57,19 +57,23 @@ class Animation {
     animationElSet(tg) {
         if (this.data.from) {
             gsap.set(tg, ...[this.data.from])
+        } else if(!this.data.from && this.reset.length > 0) {
+            console.log(this.reset)
+            this.reset[0].pause(0)
+
         }
     }
 
     animationEvent(tg, idx) {
-        if (this.isAnimated && !tg.classList.contains('animated')) {
+        if (this.isAnimated && !(tg.classList.contains('animated'))) {
             if (this.animationCount[idx]) return false
             this.data.to['onStart'] = () => this.animationCount[idx] = true
             this.data.to['onComplate'] = () => tg.classList.add('animated')
-            gsap.to(tg, this.data.duration, ...[this.data.to])
+            let tween = gsap.to(tg, this.data.duration, ...[this.data.to])
+            if (this.data.once === false && !this.data.from && this.data.to) {
+                this.reset.shift()
+                this.reset.push(tween)
+            }
         }
-    }
-
-    animationElReset(idx) {
-        this.reset[idx].pause(0)
     }
 }
