@@ -7,10 +7,11 @@
     <title>Animation</title>
     <link rel="stylesheet" href="../../intersection/css/common.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="animation.js"></script>
     <style>
         body {
             background-color: black;
-            height: 5000px;
+            height: 3000px;
         }
         :root {
             --box-blue-color: blue;
@@ -21,28 +22,48 @@
         }
         .wrap {
             width: auto;
-            margin: 1180px 0 0 50px;
+            margin: 900px 0 0 50px;
             box-sizing: border-box;
+        }
+        .start {
+            position: fixed;
+            top: 400px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: var(--box-yellow-color);
+        }
+        .end {
+            position: fixed;
+            top: 928px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: var(--box-yellow-color);
         }
         .view {
             width: 80px;
             height: 80px;
             box-sizing: border-box;
+            margin: 0 0 100px;
+        }
+        .view:nth-child(4),
+        .view:nth-child(6) {
             opacity: 0;
         }
-        .view.blue {
+        .blue {
             background-color: var(--box-blue-color);
         }
-        .view.red {
+        .red {
             background-color: var(--box-red-color);
         }
-        .view.green {
+        .green {
             background-color: var(--box-green-color);
         }
-        .view.yellow {
+        .yellow {
             background-color: var(--box-yellow-color);
         }
-        .view.purple {
+        .purple {
             background-color: var(--box-purple-color);
         }
         #target-01 {
@@ -50,10 +71,60 @@
             height: 100px;
             background-color: #d9d9d9;
         }
+        .test_area {
+            width: 100%;
+            padding: 0 20px;
+        }
+        .test {
+            width: 100px;
+            height: 100px;
+        }
+        .btn_wrap {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .btn {
+            padding: 8px 15px;
+            border-radius: 5px;
+            background-color: #a2a2a2;
+            text-align: center;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <div class="wrap">
+        <div class="start"></div>
+        <div class="view green" data-animation="{
+            &quot;duration&quot;: 1,
+            &quot;once&quot;: false,
+            &quot;to&quot;: {
+                &quot;x&quot;: 100
+            }
+        }"></div>
+        <div class="view green" data-animation="{
+            &quot;duration&quot;: 1,
+            &quot;from&quot;: {
+                &quot;x&quot;: 100
+            }, &quot;to&quot;: {
+                &quot;x&quot;: 0
+            }
+        }"></div>
+        <div class="view green" data-animation="{
+            &quot;duration&quot;: 1,
+            &quot;once&quot;: false,
+            &quot;offset&quot;: 400,
+            &quot;from&quot;: {
+                &quot;x&quot;: 100,
+                &quot;opacity&quot;: 0
+            }, &quot;to&quot;: {
+                &quot;x&quot;: 0,
+                &quot;opacity&quot;: 1
+            }
+        }"></div>
         <div id="target-01"></div>
         <div class="view green" data-animation="
             {
@@ -61,7 +132,7 @@
                 &quot;reference&quot;: &quot;#target-01&quot;,
                 &quot;offset&quot;: 150,
                 &quot;from&quot;: {
-                    &quot;x&quot;: 100,
+                    &quot;x&quot;: 200,
                     &quot;opacity&quot;: 0
                 },
                 &quot;to&quot;: {
@@ -69,78 +140,51 @@
                     &quot;opacity&quot;: 1,
                     &quot;ease&quot;: &quot;Back.easeOut&quot;
                 }
-            }"></div>
+            }
+        "></div>
+        <!-- <div class="view green" data-animation='
+            {
+                "duration": 3,
+
+            }
+        '></div> -->
+
+
+        <div class="test_box" style="width: 90%; height: 400px; background-color: #d9d9d9; display: flex; flex-wrap: wrap; justify-content: center; align-items: center;">
+            <div class="test_area">
+                <div class="test purple"></div>
+            </div>
+            <div class="btn_wrap">
+                <div class="btn btn_start">시작</div>
+                <div class="btn btn_pause">정지</div>
+                <div class="btn btn_resume">재개</div>
+                <div class="btn btn_reverse">반전</div>
+                <div class="btn btn_restart">재시작</div>
+                <div class="btn btn_test">테스트 버튼</div>
+            </div>
+        </div>
+        <div class="end"></div>
     </div>
     <script>
 
-        function Animation(el) {
-            this.el = el
-            this.data = {}
-            this.state = {}
-            this.isAnimated = {}
-
-            this.set = function(tg) {
-                let string = tg.getAttribute('data-animation').match(/(\S|\ |\n)+(\,?)/g)
-                let value = String(string).split(' ').join('').replace(/\s*/g, '')
-
-                this.data = JSON.parse(value)
-
-                let rect = tg.getBoundingClientRect()
-
-                if (rect.top >= 0 && rect.bottom <= innerHeight) this.state = 'all'
-                else if (rect.top <= 0 && rect.bottom >= 0) this.state = 'visible top'
-                else if (rect.top <= innerHeight && rect.bottom >= innerHeight) this.state = 'visible bottom'
-                else this.state = 'hidden'
-
-                if (rect.top <= (innerHeight / 2) && rect.bottom >= (innerHeight / 2)) this.isAnimated = true
-                else this.isAnimated = false
-            }
-
-            this.bindEvent = function() {
-                this.el.forEach(view => {
-                    window.addEventListener('scroll', e => {
-                        this.set(view)
-                        this.anima(view)
-                    })
-                })
-            }
-
-            this.anima = function(tg) {
-                let top = tg.getBoundingClientRect().top
-                let ref = this.data.reference
-                let refRect = document.querySelector(ref).getBoundingClientRect()
-
-                let fromKeys = Object.keys(this.data.from)
-                let toKeys = Object.keys(this.data.to)
-
-                if (this.isAnimated && !tg.classList.contains('animated')) {
-                    for (const i in fromKeys) {
-                        gsap.from(tg, this.data.duration, {
-                            [fromKeys[i]]: this.data.from[fromKeys[i]],
-                            onInit: function() {
-                                console.log(this)
-                            }
-                        })
-                    }
-
-                    for (const i in toKeys) {
-                        gsap.to(tg, this.data.duration, {
-                            [toKeys[i]]: this.data.to[toKeys[i]],
-                            onComplete: function() {
-                                tg.classList.add('animated')
-                            }
-                        })
-                    }
-                }
-
-                TweenMax.staggerFrom(tg, 1, {
-                    
-                })
-            }
-        }
-
         let ani = new Animation(document.querySelectorAll('.view'))
-        ani.bindEvent()
+
+
+        let test = document.querySelector('.test')
+        let tween = gsap.to(test, 5, {
+            x: 384,
+            rotation: 360,
+            ease: Bounce.easeOut,
+            delay: .5,
+            paused: true
+        })
+
+        document.querySelector('.btn_start').addEventListener('click', () => tween.play())
+        document.querySelector('.btn_pause').addEventListener('click', () => tween.pause())
+        document.querySelector('.btn_resume').addEventListener('click', () => tween.resume())
+        document.querySelector('.btn_reverse').addEventListener('click', () => tween.reverse())
+        document.querySelector('.btn_restart').addEventListener('click', () => tween.restart())
+        document.querySelector('.btn_test').addEventListener('click', () => tween.pause(0))
 
     </script>
 </body>
