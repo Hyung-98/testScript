@@ -11,7 +11,7 @@
     <style>
         body {
             background-color: black;
-            height: 3000px;
+            height: 5000px;
         }
         :root {
             --box-blue-color: blue;
@@ -27,20 +27,20 @@
             box-sizing: border-box;
         }
         .start {
-            position: fixed;
-            top: 400px;
+            position: absolute;
+            top: -150px;
             left: 0;
             width: 100%;
             height: 1px;
-            background-color: var(--box-yellow-color);
+            background-color: var(--box-purple-color);
         }
         .end {
             position: fixed;
-            top: 928px;
+            top: 1178px;
             left: 0;
             width: 100%;
             height: 1px;
-            background-color: var(--box-yellow-color);
+            background-color: var(--box-purple-color);
         }
         .view {
             width: 80px;
@@ -66,11 +66,6 @@
         }
         .purple {
             background-color: var(--box-purple-color);
-        }
-        #target-01 {
-            width: 350px;
-            height: 100px;
-            background-color: #d9d9d9;
         }
         .test_area {
             width: 100%;
@@ -195,7 +190,7 @@
                     "y": 0,
                     "opacity": 1,
                     "delay": 0.5,
-                    "ease": "Back.easeOut"
+                    "ease": "Power4.easeOut"
                 }
             }
         '></div>
@@ -210,7 +205,7 @@
                     "y": 0,
                     "opacity": 1,
                     "delay": 0.5,
-                    "ease": "Back.easeOut"
+                    "ease": "Power4.easeOut"
                 }
             }
         '></div>
@@ -225,7 +220,7 @@
                     "y": 0,
                     "opacity": 1,
                     "delay": 0.5,
-                    "ease": "Back.easeOut"
+                    "ease": "Power4.easeOut"
                 }
             }
         '></div>
@@ -240,29 +235,36 @@
                     "y": 0,
                     "opacity": 1,
                     "delay": 0.5,
-                    "ease": "Back.easeOut"
+                    "ease": "Power4.easeOut"
                 }
             }
         '></div>
-        <div class="box" data-animation='
-            {
-                "duration": 2,
-                "from": {
-                    "y": 200,
-                    "opacity": 0
-                },
-                "to": {
-                    "y": 0,
-                    "opacity": 1,
-                    "delay": 0.5,
-                    "ease": "Power4.easeInOut"
+        <div id="target-01" style="width: 100%; height: 600px; background-color: #fff; margin-bottom: 50px; position: relative;">
+            <div class="start"></div>
+            <div class="con" style="width: 100px; height: 100px; background-color: var(--box-green-color);" data-animation='
+                {
+                    "duration": 2,
+                    "offset": 150,
+                    "reference": "#target-01",
+                    "from": {
+                        "x": 200,
+                        "opacity": 0
+                    },
+                    "to": {
+                        "x": 0,
+                        "opacity": 1,
+                        "delay": 0.5,
+                        "ease": "Power4.ease"
+                    }
                 }
-            }
-        '></div>
+            '></div>
+            <div class="end"></div>
+        </div>
     </div>
     <script>
 
         let ani = new Animation(document.querySelectorAll('.box'))
+        let ani2 = new Animation(document.querySelectorAll('.con'))
 
 
         // let test = document.querySelector('.test')

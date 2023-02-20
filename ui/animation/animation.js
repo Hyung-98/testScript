@@ -29,12 +29,34 @@ class Animation {
         });
     }
 
+    animationAttrData(tg) {
+        let tgAttr = tg.getAttribute('data-animation').replace(/\s*/g, '')
+        this.data = JSON.parse(tgAttr)
+    }
+
     detectAnimation(tg) {
         this.rect = tg.getBoundingClientRect()
-        if (this.data.offset && this.rect.bottom >= this.data.offset && this.rect.top <= (innerHeight - this.data.offset)) this.isAnimated = true
-        else if (!this.data.offset && this.rect.bottom >= (innerHeight * 0.2) && this.rect.top <= (innerHeight * 0.7)) {
-            this.isAnimated = true
-        }
+        let refRect = this.data.reference ? document.querySelector(this.data.reference).getBoundingClientRect() : undefined
+        console.log(refRect)
+
+        if (
+            !this.data.reference &&
+            !this.data.offset &&
+            this.rect.bottom >= (innerHeight * 0.2) &&
+            this.rect.top <= (innerHeight * 0.7)
+            ) this.isAnimated = true
+        else if (
+            !this.data.reference &&
+            this.data.offset &&
+            this.rect.bottom >= this.data.offset &&
+            this.rect.top <= (innerHeight - this.data.offset)
+            ) this.isAnimated = true
+        else if (
+            this.data.reference &&
+            this.data.offset &&
+            refRect.top >= this.data.offset && 
+            refRect.top <= (innerHeight - this.data.offset)
+            ) this.isAnimated = true
         else this.isAnimated = false
     }
 
@@ -47,11 +69,6 @@ class Animation {
                 tg.classList.remove('animated')
             }
         }
-    }
-
-    animationAttrData(tg) {
-        let tgAttr = tg.getAttribute('data-animation').replace(/\s*/g, '')
-        this.data = JSON.parse(tgAttr)
     }
 
     animationElSet(tg) {
